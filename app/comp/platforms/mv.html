@@ -1,0 +1,130 @@
+<div class='mv' style='display: none;'>
+
+  <style>
+
+    .mv-topBar {
+
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        background: #343434;
+
+    }
+
+    .mv-main {
+
+      position: absolute;
+      width: 100%;
+      top: 30px;
+
+    }
+
+    .mv-controlContent {
+
+      position: absolute;
+      width: 100%;
+      bottom: 0%;
+      height: 30%;
+
+    }
+
+    .mv-lcontrol {
+
+      position: relative;
+      height: 100%;
+      background: gray;
+      width: 50%;
+      float: left;
+
+    }
+
+    .mv-rcontrol {
+
+      position: relative;
+      height: 100%;
+      background: gray;
+      width: 50%;
+      float: right;
+
+    }
+
+    .mv-mainGame {
+
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: auto;
+      top: 50%;
+      background: rgb(88, 88, 88);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      overflow: hidden;
+
+    }
+
+  </style>
+
+  <div class='mv-topBar'></div>
+
+  <div class='mv-main'>
+
+    <div class='mv-mainGame'>
+
+    </div>
+
+  </div>
+
+  <div class='mv-controlContent'>
+
+    <div class='mv-rcontrol'>
+
+
+
+    </div>
+
+    <div class='mv-lcontrol'>
+
+
+
+    </div>
+
+  </div>
+
+  <script type='text/javascript' >
+
+    (function(){
+
+      function mvMainGameResponsive() {
+
+        setInterval(function(e){
+
+          $('.mv-main').css('height',(  (f('body', 'height')-f('.mv-controlContent', 'height')-30) +'px'  ));
+
+          if(f('.mv-main', 'width')>f('.mv-main', 'height')){
+
+            //console.log('w');
+
+            $('.mv-mainGame').css('width', (f('.mv-main', 'height')+'px'));
+            $('.mv-mainGame').css('height', (f('.mv-main', 'height')+'px'));
+
+          }else{
+
+            //console.log('h');
+
+            $('.mv-mainGame').css('width', (f('.mv-main', 'width')+'px'));
+            $('.mv-mainGame').css('height', (f('.mv-main', 'width')+'px'));
+
+          }
+
+        }, 100);
+
+      }
+
+      mvMainGameResponsive();
+
+
+    }());
+
+  </script>
+
+</div>

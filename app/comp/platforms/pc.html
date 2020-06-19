@@ -1,0 +1,83 @@
+<div class='pc' style='display: none;'>
+
+  <style>
+
+
+    .pc-topBar {
+
+      position: absolute;
+      width: 100%;
+      background: #2f2f2f;
+      height: 30px;
+
+    }
+
+    .pc-botBar {
+
+      position: absolute;
+      width: 100%;
+      background: #2f2f2f;
+      height: 100px;
+      bottom: 0px;
+
+    }
+
+    .pc-mainGame {
+
+        position: absolute;
+        transform: translate(-50%, 0);
+        left: 50%;
+        background: #818181;
+        top: 30px;
+        overflow: hidden;
+
+    }
+
+
+
+  </style>
+
+  <div class='pc-topBar'></div>
+
+  <div class='pc-mainGame'></div>
+
+  <div class='pc-botBar'></div>
+
+  <script type='text/javascript' >
+
+    (function(){
+
+
+      function pcMainGameResponsive() {
+
+        setInterval(function(e){
+
+          $('.pc-mainGame').css('height', (   ( f('body', 'height') - 130  )+'px'   ));
+          $('.pc-mainGame').css('width', (   ( f('body', 'height') - 130  )+'px'   ));
+
+
+          if(f('body', 'width')>f('body', 'height')){
+
+
+
+          }else{
+
+
+
+          }
+
+        }, 100);
+
+      }
+
+      pcMainGameResponsive();
+
+      //alert();
+
+
+    }());
+
+  </script>
+
+
+</div>

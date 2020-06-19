@@ -1,0 +1,253 @@
+
+<div class='map'></div>
+
+<div class='centerPlayer'></div>
+
+<div id='joy'></div>
+
+<script type='text/javascript'>
+
+  (function(){
+
+    function mainLoop(){
+
+      setInterval(function(e){
+
+        if(isMobile()!=null){
+
+          if(f('body', 'width')>=f('body', 'height')){
+
+            if(platform!='mh'){
+
+              $('.mh').css('display', 'contents');
+              $('.mv').css('display', 'none');
+              $('.pc').css('display', 'none');
+
+              platform = 'mh';
+
+              $('#joy').css('display', 'block');
+              $('#joy').appendTo('.mh-lcontrol');
+
+              $('.map').appendTo('.mh-mainGame');
+              $('.centerPlayer').appendTo('.mh-mainGame');
+
+            }
+
+          }else{
+
+
+            if(platform!='mv'){
+
+              $('.mh').css('display', 'none');
+              $('.mv').css('display', 'contents');
+              $('.pc').css('display', 'none');
+
+              platform = 'mv';
+
+              $('#joy').css('display', 'block');
+              $('#joy').appendTo('.mv-lcontrol');
+
+              $('.map').appendTo('.mv-mainGame');
+              $('.centerPlayer').appendTo('.mv-mainGame');
+
+            }
+
+          }
+
+        }else{
+
+          if(platform!='pc'){
+
+            $('.mh').css('display', 'none');
+            $('.mv').css('display', 'none');
+            $('.pc').css('display', 'contents');
+
+            $('#joy').css('display', 'none');
+
+            $('.map').appendTo('.pc-mainGame');
+            $('.centerPlayer').appendTo('.pc-mainGame');
+
+            platform = 'pc';
+
+          }
+
+        }
+
+        if((keyState[40])||(dragJoy && dragJoyDir=='S')){
+
+          users[0].ypos = users[0].ypos+1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '18');
+          sendws(0, 'mov');
+
+        }
+
+        if((keyState[38])||(dragJoy && dragJoyDir=='N')){
+
+          users[0].ypos = users[0].ypos-1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '12');
+          sendws(0, 'mov');
+
+        }
+
+        if((keyState[39])||(dragJoy && dragJoyDir=='E')){
+
+          users[0].xpos = users[0].xpos+1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '16');
+          sendws(0, 'mov');
+
+        }
+
+        if((keyState[37])||(dragJoy && dragJoyDir=='W')){
+
+          users[0].xpos = users[0].xpos-1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '14');
+          sendws(0, 'mov');
+
+        }
+
+        if(dragJoy && (dragJoyDir=='SE')){
+
+          users[0].xpos = users[0].xpos+1;
+          users[0].ypos = users[0].ypos+1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '16');
+          sendws(0, 'mov');
+
+        }
+
+        if(dragJoy && (dragJoyDir=='SW')){
+
+          users[0].xpos = users[0].xpos-1;
+          users[0].ypos = users[0].ypos+1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '14');
+          sendws(0, 'mov');
+
+        }
+
+        if(dragJoy && (dragJoyDir=='NE')){
+
+          users[0].xpos = users[0].xpos+1;
+          users[0].ypos = users[0].ypos-1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '16');
+          sendws(0, 'mov');
+
+        }
+
+        if(dragJoy && (dragJoyDir=='NW')){
+
+          users[0].xpos = users[0].xpos-1;
+          users[0].ypos = users[0].ypos-1;
+          limitMov(0);
+          mov(users[0].xpos, users[0].ypos, '14');
+          sendws(0, 'mov');
+
+        }
+
+      }, 50);
+
+    }
+
+    users[0] = {
+
+      'state':'new',
+      'id':getID(),
+      'xpos':random(1, (dim*fdim)),
+      'ypos':random(1, (dim*fdim)),
+      'clase':'android',
+      'sprite':'08'
+
+    };
+
+    //bucles
+    mainLoop();
+    wsLoad();
+
+    mapLoad();
+    joyLoad();
+    keyLoad();
+
+    loadMainUser(0);
+    mov(users[0].xpos, users[0].ypos, '08');
+
+    socket.addEventListener('open', function (event) {
+
+      sendws(0, 'new');
+      sendws(0, 'test');
+      console.log('WebSocket Connected');
+
+    });
+
+    socket.addEventListener('message', function (event) {
+
+      if (isJSON(event.data)){
+
+        var wsObj = JSON.parse(event.data);
+
+        if(wsObj.id!=users[0].id){
+
+          console.log('WebSocket -> '+ event.data);
+
+          var existe = false;
+          var indice = null;
+
+          for (var i=0; i<users.length; i++) {
+
+            if(users[i].id==wsObj.id){
+
+              existe = true;
+              indice = i;
+
+              if(wsObj.state=='del'){
+
+                users.splice(i, 1);
+                console.log('DISCONNECTED CLIENT ID: '+wsObj.id);
+                $('.user'+wsObj.id).remove();
+
+              }else if(wsObj.state!='new'){
+
+                users[i]=wsObj;
+                console.log('UPDATE CLIENT ID: '+wsObj.id);
+
+              }
+
+            }
+
+          }
+
+          if((wsObj.state=='new')&&(!existe)){
+
+            users.push(wsObj);
+            console.log('CONNECTED CLIENT ID: '+wsObj.id);
+            loadUser((users.length-1));
+            sendws(0, 'new');
+
+          }
+
+          if((wsObj.state=='mov')&&(existe)){
+
+            movUser(indice);
+            fullChangeSprite(indice);
+
+          }
+
+          if((wsObj.state=='stopmov')&&(existe)){
+
+            fullChangeSprite(indice);
+
+          }
+
+        }
+
+      }
+
+    });
+
+  }());
+
+</script>

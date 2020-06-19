@@ -1,0 +1,141 @@
+<div class='mh' style='display: none;'>
+
+  <style>
+
+
+    .mh-topBar {
+
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        background: #343434;
+
+    }
+
+    .mh-lcontent {
+
+      position: absolute;
+      width: 25%;
+      top: 30px;
+
+    }
+
+    .mh-rcontent {
+
+      position: absolute;
+      width: 25%;
+      left: 75%;
+      top: 30px;
+
+    }
+
+    .mh-mcontent {
+
+      position: absolute;
+      width: 50%;
+      left: 25%;
+      top: 30px;
+
+    }
+
+    .mh-lcontrol, .mh-rcontrol {
+
+      position: absolute;
+      width: 100%;
+      bottom: 0px;
+      background: gray;
+
+    }
+
+    .mh-mainGame {
+
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: auto;
+      top: 50%;
+      background: rgb(88, 88, 88);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      overflow: hidden;
+
+    }
+
+  </style>
+
+  <div class='mh-topBar'></div>
+
+  <div class='mh-lcontent'>
+
+    <div class='mh-lcontrol'>
+
+    </div>
+
+  </div>
+
+  <div class='mh-rcontent'>
+
+    <div class='mh-rcontrol'>
+
+    </div>
+
+  </div>
+
+  <div class='mh-mcontent'>
+
+    <div class='mh-mainGame'>
+
+    </div>
+
+  </div>
+
+
+
+
+  <script type='text/javascript' >
+
+    (function(){
+
+
+
+      function mhMainGameResponsive() {
+
+        setInterval(function(e){
+
+          $('.mh-rcontent').css('height', (f('body', 'height')-30)+'px');
+          $('.mh-lcontent').css('height', (f('body', 'height')-30)+'px');
+          $('.mh-mcontent').css('height', (f('body', 'height')-30)+'px');
+
+          $('.mh-lcontrol').css('height', (f('.mh-lcontent', 'width')+'px'));
+          $('.mh-rcontrol').css('height', (f('.mh-rcontent', 'width')+'px'));
+
+          $('.mh-lcontrol').css('width', (f('.mh-lcontent', 'width')+'px'));
+          $('.mh-rcontrol').css('width', (f('.mh-rcontent', 'width')+'px'));
+
+          if(f('.mh-mcontent', 'width')>f('.mh-mcontent', 'height')){
+
+            //console.log('w');
+
+            $('.mh-mainGame').css('width', (f('.mh-mcontent', 'height')+'px'));
+            $('.mh-mainGame').css('height', (f('.mh-mcontent', 'height')+'px'));
+
+          }else{
+
+            //console.log('h');
+
+            $('.mh-mainGame').css('width', (f('.mh-mcontent', 'width')+'px'));
+            $('.mh-mainGame').css('height', (f('.mh-mcontent', 'width')+'px'));
+
+          }
+
+        }, 100);
+
+      }
+
+      mhMainGameResponsive();
+
+    }());
+
+  </script>
+
+</div>

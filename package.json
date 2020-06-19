@@ -1,0 +1,30 @@
+{
+  "name": "CYBERIA",
+  "description": "massively multiplayer online role-playing game",
+  "version": "1.0.0",
+  "main": "init.js",
+  "scripts": {
+    "start": "node init.js",
+    "sv": "nodemon app/sv.js",
+    "ws": "nodemon app/ws.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "cyberia",
+    "online",
+    "mmo",
+    "game"
+  ],
+  "author": "Francisco Verdugo fcoverdugoa@underpost.net",
+  "license": "MIT",
+  "homepage": "https://www.cyberiaonline.com/",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "pg-promise": "^10.5.5",
+    "ws": "^7.3.0"
+  }
+}
